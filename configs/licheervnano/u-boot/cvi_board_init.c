@@ -60,15 +60,6 @@ int cvi_board_init(void)
         //mmio_write_32(0x03001038, 0x3); // SD0_PWR_EN/XGPIOA_14
         PINMUX_CONFIG(SD0_PWR_EN, XGPIOA_14);
 
-        // uart bluetooth
-        //mmio_write_32(0x03001070, 0x1); // GPIOA 28 UART1 TX
-        //mmio_write_32(0x03001074, 0x1); // GPIOA 29 UART1 RX
-        //mmio_write_32(0x03001068, 0x4); // GPIOA 18 UART1 CTS
-        //mmio_write_32(0x03001064, 0x4); // GPIOA 19 UART1 RTS
-
-        // PWM
-        //mmio_write_32(0x03001068, 0x2); // GPIOA 18 PWM 6
-
         // lcd reset
         mmio_write_32(0x030010A4, 0x0); // PWRGPIO 0 GPIO_MODE
 
@@ -82,23 +73,16 @@ int cvi_board_init(void)
         val |= (1 << 0); // set level to high
         mmio_write_32(0x03021000, val);
 
-        // camera function
-        mmio_write_32(0x0300116C, 0x5); // RX4N CAM_MCLK0
+	// bitbang i2c
+        mmio_write_32(0x0300103C, 0x03); // GPIOA 15 GPIO_MODE
+	mmio_write_32(0x03001058, 0x03); // GPIOA 27 GPIO_MODE
 
-        // camera/tp i2c
-        mmio_write_32(0x03001090, 0x5); // PWR_GPIO6 IIC4_SCL
-        mmio_write_32(0x03001098, 0x5); // PWR_GPIO8 IIC4_SDA
+	// bitbang spi
+	mmio_write_32(0x03001060, 0x03); // GPIOA 24 GPIO_MODE
+	mmio_write_32(0x0300105C, 0x03); // GPIOA 23 GPIO_MODE
+	mmio_write_32(0x03001054, 0x03); // GPIOA 25 GPIO_MODE
+	mmio_write_32(0x03001050, 0x03); // GPIOA 22 GPIO_MODE
 
-        // tp function
-        mmio_write_32(0x03001084, 0x3); // PWR_SEQ1 PWR_GPIO[3]
-        mmio_write_32(0x03001088, 0x3); // PWR_SEQ2 PWR_GPIO[4]
-        mmio_write_32(0x05027078, 0x11);// Unlock PWR_GPIO[3]
-        mmio_write_32(0x0502707c, 0x11);// Unlock PWR_GPIO[4]
-
-        // bitbang i2c for maixcam
-#ifdef MAIXCAM
-        mmio_write_32(0x0300105C, 0x3);// GPIOA 23 GPIO_MODE
-        mmio_write_32(0x03001060, 0x3);// GPIOA 24 GPIO_MODE
 #endif
         // wait hardware bootup
         suck_loop(100);
