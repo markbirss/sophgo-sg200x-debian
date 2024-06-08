@@ -83,7 +83,7 @@ int cvi_board_init(void)
 	mmio_write_32(0x03001054, 0x03); // GPIOA 25 GPIO_MODE
 	mmio_write_32(0x03001050, 0x03); // GPIOA 22 GPIO_MODE
 
-#endif
+
         // wait hardware bootup
         suck_loop(100);
         return 0;
